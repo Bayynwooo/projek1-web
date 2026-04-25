@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TokoDigital Ultra</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Roboto',sans-serif;}
+body {background:#f5f5f5;}
+
+/* HEADER */
+header {
+  background: linear-gradient(90deg,#ff5722,#ff9800);
+  color:white; padding:15px 30px;
+  display:flex; justify-content:space-between; align-items:center;
+  position:sticky; top:0; z-index:100; box-shadow:0 4px 10px rgba(0,0,0,0.3);
+  transition:0.3s;
+}
+header h1 { font-size:24px; text-shadow:1px 1px 2px rgba(0,0,0,0.3);}
+nav a { color:white; margin-left:20px; text-decoration:none; font-weight:500; transition:0.3s; }
+nav a:hover { color:#ffc107; text-shadow:1px 1px 3px rgba(0,0,0,0.6); cursor:pointer; }
+
+/* SLIDER */
+.slider { position:relative; max-width:100%; height:350px; overflow:hidden; border-radius:15px; margin:20px 30px; box-shadow:0 8px 20px rgba(0,0,0,0.3);}
+.slides { display:flex; transition: transform 0.6s ease-in-out;}
+.slide { min-width:100%; height:350px; position:relative; display:flex; align-items:center; justify-content:center; color:white; font-size:32px; font-weight:bold; text-shadow:2px 2px 10px rgba(0,0,0,0.6);}
+.slide img { width:100%; height:350px; object-fit:cover; border-radius:15px; }
+.prev, .next {
+  position:absolute; top:50%; transform:translateY(-50%);
+  background: rgba(0,0,0,0.4); color:white; padding:12px; cursor:pointer; border-radius:50%; font-size:22px; transition:0.3s;
+}
+.prev:hover, .next:hover { background: rgba(0,0,0,0.7); }
+.prev { left:15px; } .next { right:15px; }
+.dots { position:absolute; bottom:15px; width:100%; text-align:center; }
+.dot { height:12px; width:12px; margin:0 5px; background: rgba(255,255,255,0.6); border-radius:50%; display:inline-block; cursor:pointer; transition:0.3s; }
+.dot.active { background:#ff9800; transform:scale(1.3); }
+
+/* FILTER */
+.filter-bar { display:flex; justify-content:space-between; align-items:center; padding:0 30px 20px 30px; }
+.filter-bar select, .filter-bar input { padding:10px 12px; font-size:16px; border-radius:10px; border:1px solid #ccc; transition:0.3s; }
+.filter-bar select:hover, .filter-bar input:hover { border-color:#ff9800; }
+
+/* PRODUCTS GRID */
+.products { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:25px; padding:0 30px 50px 30px; }
+.product-card { background:white; border-radius:15px; padding:15px; box-shadow:0 6px 15px rgba(0,0,0,0.15); transition:0.4s; overflow:hidden; position:relative; }
+.product-card:hover { transform:translateY(-10px); box-shadow:0 12px 25px rgba(0,0,0,0.3);}
+.product-card img { width:100%; height:200px; object-fit:cover; border-radius:15px; margin-bottom:10px; transition:0.3s; }
+.product-card img:hover { transform:scale(1.05); }
+.product-card h3 { font-size:18px; margin-bottom:5px; color:#333;}
+.product-card p { font-size:16px; color:#ff5722; font-weight:bold; margin-bottom:10px; }
+.product-card button { background: linear-gradient(90deg,#ff5722,#ff9800); border:none; color:white; padding:10px; width:100%; border-radius:10px; cursor:pointer; font-weight:bold; transition:0.3s;}
+.product-card button:hover { background: linear-gradient(90deg,#ff9800,#ff5722); transform:scale(1.05);}
+
+/* CART */
+.cart { position:fixed; top:100px; right:-350px; background:white; width:350px; max-height:500px; overflow:auto; box-shadow:0 8px 25px rgba(0,0,0,0.3); border-radius:15px; z-index:200; transition:0.5s;}
+.cart.show { right:20px; }
+.cart h3 { background: linear-gradient(90deg,#ff5722,#ff9800); color:white; padding:12px; border-radius:15px 15px 0 0; text-align:center;}
+.cart ul { list-style:none; padding:10px; }
+.cart ul li { display:flex; justify-content:space-between; margin-bottom:10px; font-size:16px; }
+.cart ul li button { background:red; border:none; color:white; border-radius:50%; width:22px; height:22px; cursor:pointer; }
+.cart-total { text-align:right; font-weight:bold; padding:10px; border-top:1px solid #ccc; font-size:16px; }
+
+/* LOGIN MODAL */
+.modal { display:none; position:fixed; z-index:300; left:0; top:0; width:100%; height:100%; overflow:auto; background-color: rgba(0,0,0,0.6);}
+.modal-content { background:white; margin:8% auto; padding:25px; border-radius:15px; width:320px; text-align:center; animation:fadeIn 0.5s ease;}
+@keyframes fadeIn { from {opacity:0; transform:translateY(-30px);} to {opacity:1; transform:translateY(0);} }
+.modal-content input { width:90%; padding:10px; margin:12px 0; border-radius:10px; border:1px solid #ccc; }
+.modal-content button { background: linear-gradient(90deg,#ff5722,#ff9800); border:none; color:white; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:bold; transition:0.3s; }
+.modal-content button:hover { background: linear-gradient(90deg,#ff9800,#ff5722); transform:scale(1.05);}
+.close { float:right; cursor:pointer; font-weight:bold; font-size:22px; }
+
+/* FOOTER */
+footer { background:#222; color:white; text-align:center; padding:25px; margin-top:50px; letter-spacing:1px; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>TokoDigital Ultra</h1>
+<nav>
+  <a onclick="openLogin()">Login</a>
+  <a onclick="toggleCart()">Keranjang</a>
+</nav>
+</header>
+
+<!-- SLIDER -->
+<div class="slider" id="slider">
+  <div class="slides">
+    <div class="slide"><img src="https://cdnpro.eraspace.com/media/wysiwyg/New_Banner_Promo/category-iBox---voucher-Januari-2025_copy.webp" alt="Promo 1"><span>Promo Ibox 2026</span></div>
+    <div class="slide"><img src="https://www.zalora.co.id/blog/wp-content/uploads/2024/06/1280x720_APP_HEROSECONDARY_ZBFS_.jpg" alt="Promo 2"><span>Diskon Fashion Up to 50%</span></div>
+    <div class="slide"><img src="https://katalogpromosi.com/wp-content/uploads/2026/03/promo-type-click-diskon-aksesoris-gadget-60-persen.jpg" alt="Promo 3"><span>Aksesoris Kekinian </span></div>
+  </div>
+  <span class="prev" onclick="prevSlide()">&#10094;</span>
+  <span class="next" onclick="nextSlide()">&#10095;</span>
+  <div class="dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+</div>
+
+
+<!-- FILTER -->
+<div class="filter-bar">
+  <select id="categoryFilter">
+    <option value="all">Semua Kategori</option>
+    <option value="elektronik">Elektronik</option>
+    <option value="fashion">Fashion</option>
+    <option value="game">Game</option>
+  </select>
+  <input type="text" id="searchInput" placeholder="Cari produk...">
+</div>
+
+<!-- PRODUCTS -->
+<section class="products" id="productContainer"></section>
+
+<!-- CART -->
+<div class="cart" id="cart">
+  <h3>Keranjang Belanja</h3>
+  <ul id="cartItems"></ul>
+  <div class="cart-total" id="cartTotal">Total: Rp0</div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeLogin()">&times;</span>
+    <h2>Login</h2>
+    <input type="text" placeholder="Username" id="username">
+    <input type="password" placeholder="Password" id="password">
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
+<footer>&copy;<i>2026  </i></footer>
+
+<script>
+// DATA PRODUK
+const products = [
+  {name:"Smartphone", price:2000000, category:"elektronik", img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80"},
+  {name:"Laptop", price:5000000, category:"elektronik", img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=500&q=80"},
+  {name:"Headphone", price:300000, category:"elektronik", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAKjVV4vX4VjLUpkSLgjrU2NyvXO8fu7X72g&s"},
+  {name:"Kaos T-Shirt", price:100000, category:"fashion", img:"https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//89/MTA-35282014/brd-44261_-oversize-kaos-distro-baju-kaos-oversize-kaos-pria-oversize-t-shirt-pakaian-pria-free-sticker-_full01.jpg"},
+  {name:"Jaket Hoodie", price:250000, category:"fashion", img:"https://down-id.img.susercontent.com/file/id-11134207-822wj-mmraqttm1tz87d"},
+  {name:"Sneakers", price:400000, category:"fashion", img:"https://kuka.co.id/asset/product_photo/6c773ea7594778a6cdd914ae258d757c.jpeg"},
+  {name:"PS5", price:8500000, category:"game", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCMEzWPPbvzGtULMqCrmy60tSHNAhdukvOSQ&s"},
+  {name:"Xbox Series X", price:8000000, category:"game", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRN9JfPQtJpyp5F010qX5LiCEqBp0ifX5Ub8A&s"},
+  {name:"Nintendo Switch", price:4000000, category:"game", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkdBbUGKDK3StUezjGuUg4u92ClyN4s7kfrQ&s"},
+  {name:"Smartwatch", price:1200000, category:"elektronik", img:"https://img.lazcdn.com/g/p/4f71854694dce95538aa09e6a1af8258.jpg_720x720q80.jpg"},
+  {name:"Tas Ransel", price:750000, category:"fashion", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5mPq85oI0Zeiqas4yR4PtJ0rtU21pVgOv6A&s"}
+];
+
+// RENDER PRODUK
+const productContainer = document.getElementById('productContainer');
+function renderProducts(filter="all", search=""){
+  productContainer.innerHTML="";
+  const filtered = products.filter(p => (filter==="all"||p.category===filter) && p.name.toLowerCase().includes(search.toLowerCase()));
+  filtered.forEach(p=>{
+    const card=document.createElement('div');
+    card.className="product-card";
+    card.innerHTML=`<img loading="lazy" src="${p.img}" alt="${p.name}">
+                    <h3>${p.name}</h3>
+                    <p>Rp${p.price.toLocaleString()}</p>
+                    <button onclick="addToCart('${p.name}')">Tambah ke Keranjang</button>`;
+    productContainer.appendChild(card);
+  });
+}
+renderProducts();
+
+// FILTER & SEARCH
+document.getElementById('categoryFilter').addEventListener('change', e=>renderProducts(e.target.value, document.getElementById('searchInput').value));
+document.getElementById('searchInput').addEventListener('input', e=>renderProducts(document.getElementById('categoryFilter').value, e.target.value));
+
+// CART
+let cart=[];
+const cartDiv=document.getElementById('cart');
+function toggleCart(){ cartDiv.classList.toggle('show'); }
+function addToCart(name){
+  const prod=products.find(p=>p.name===name);
+  cart.push(prod);
+  updateCart();
+  cartDiv.classList.add('show');
+}
+function removeFromCart(idx){ cart.splice(idx,1); updateCart();}
+function updateCart(){
+  const cartItems=document.getElementById('cartItems');
+  const cartTotal=document.getElementById('cartTotal');
+  cartItems.innerHTML="";
+  let total=0;
+  cart.forEach((item,idx)=>{
+    const li=document.createElement('li');
+    li.innerHTML=`${item.name} - Rp${item.price.toLocaleString()} <button onclick="removeFromCart(${idx})">&times;</button>`;
+    cartItems.appendChild(li);
+    total+=item.price;
+  });
+  cartTotal.textContent="Total: Rp"+total.toLocaleString();
+}
+
+// LOGIN MODAL
+function openLogin(){ document.getElementById('loginModal').style.display='block'; }
+function closeLogin(){ document.getElementById('loginModal').style.display='none'; }
+function login(){ alert("Login berhasil (simulasi)"); closeLogin(); }
+
+// SLIDER
+const slides=document.querySelector('.slides');
+const dots=document.querySelectorAll('.dot');
+let currentIndex=0;
+const totalSlides=dots.length;
+let sliderInterval=setInterval(nextSlide,5000);
+
+function showSlide(idx){
+  slides.style.transform=`translateX(-${idx*100}%)`;
+  dots.forEach(dot=>dot.classList.remove('active'));
+  dots[idx].classList.add('active');
+}
+function nextSlide(){ currentIndex=(currentIndex+1)%totalSlides; showSlide(currentIndex);}
+function prevSlide(){ currentIndex=(currentIndex-1+totalSlides)%totalSlides; showSlide(currentIndex);}
+dots.forEach((dot,idx)=>dot.addEventListener('click',()=>{ currentIndex=idx; showSlide(currentIndex); }));
+
+// PAUSE ON HOVER
+document.getElementById('slider').addEventListener('mouseover', ()=>clearInterval(sliderInterval));
+document.getElementById('slider').addEventListener('mouseout', ()=>sliderInterval=setInterval(nextSlide,5000));
+</script>
+
+</body>
+</html>
